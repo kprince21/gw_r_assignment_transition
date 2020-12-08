@@ -40,14 +40,12 @@ newnames_staff <- anti_join(staff_data_current, staff_data_previous, by = "idstr
 #see what we have
 newnames_staff
 
-#we'll create a NEW NAMED OBJECT to use from here on out for the full dataset
-allstaffnames <- staff_data_current
 
 ### SAVE results #### 
 #names of new senior staffers
 saveRDS(newnames_staff, "processed_data/newnames_staff.rds")
 #entire wh senior staff current file
-saveRDS(allstaffnames, "processed_data/allstaffnames.rds")
+saveRDS(staff_data_current, "processed_data/staff_data_current.rds")
 
 
 
