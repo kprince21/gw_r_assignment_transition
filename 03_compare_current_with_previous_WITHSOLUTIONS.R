@@ -80,26 +80,30 @@ newnames <- anti_join(transition_data_current, transition_data_previous, by = "i
 newnames
 
 
-# Compare TOTALS by department #######
-agencycount_current <- transition_data_current %>% 
-  count(agency, name = "current_count")
+### Compare TOTALS by department #######
 
-agencycount_current
+temp1 <- transition_data_current %>% 
+  mutate(status = "current")
 
-agencycount_previous <- transition_data_previous %>% 
-  count(agency, name = "previous_count")
+temp2 <- transition_data_previous %>% 
+  mutate(status = "previous")
 
-agencycount_previous
+#combine
+agencycount_combined <- bind_rows(temp1, temp2) %>% 
+  select(status, everything())
 
-#join
-agencycount_compare <- left_join(agencycount_current, agencycount_previous, by = "agency")
-agencycount_compare
+#do the counts
+agencycount_compare <- agencycount_combined %>% 
+  count(agency, status)
 
-#add change columns
+#transform to wide and add change columns
 agencycount_compare <- agencycount_compare %>% 
+  pivot_wider(names_from = status, values_from = n) %>% 
   mutate(
-    change = current_count - previous_count
+    change = current - previous
   )
+
+agencycount_compare
 
 
 #we'll create a NEW NAMED OBJECT to use from here on out for the full dataset
