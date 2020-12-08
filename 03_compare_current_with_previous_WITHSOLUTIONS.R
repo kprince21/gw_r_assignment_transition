@@ -22,14 +22,40 @@ source("02_scrape_nominees.R")
 #You can use the filled-in version for the agency teams below to help model yours after if it's helpful,
 #since the steps should be much the same.
 
+#Your code here:
 
-#Your code here#
+# compare senior staff names with previous archived version 
 
-# YOUR CODE
+#load current data
+staff_data_current <- readRDS("processed_data/staff_data_scraped.rds")
+staff_data_current
+
+# load archived data to compare against
+staff_data_previous <- readRDS("archived_data/staff_data_archived_2020_11_24t14_00.rds")
+staff_data_previous
+
+#find new records of names added since previous
+newnames_staff <- anti_join(staff_data_current, staff_data_previous, by = "idstring")
+
+#see what we have
+newnames_staff
+
+#we'll create a NEW NAMED OBJECT to use from here on out for the full dataset
+allstaffnames <- staff_data_current
+
+### SAVE results #### 
+#names of new senior staffers
+saveRDS(newnames_staff, "processed_data/newnames_staff.rds")
+#entire wh senior staff current file
+saveRDS(allstaffnames, "processed_data/allstaffnames.rds")
 
 
 
 
+
+
+
+########################################################################################
 
 
 
